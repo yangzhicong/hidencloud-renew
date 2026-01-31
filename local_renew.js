@@ -347,6 +347,9 @@ class HidenCloudBot {
     let cookieData = {};
     let isCloudMode = false;
 
+    // 检测运行环境
+    const isGithubActions = process.env.GITHUB_ACTIONS === 'true';
+
     // 优先从环境变量读取（云端模式）
     const envCookies = {};
     for (let i = 1; i <= 10; i++) {
@@ -361,6 +364,12 @@ class HidenCloudBot {
         console.log('☁️  检测到环境变量配置，使用云端模式\n');
         cookieData = envCookies;
         isCloudMode = true;
+    } else if (isGithubActions) {
+        // GitHub Actions 环境下，如果没有环境变量，则是配置错误
+        console.log('☁️  检测到 GitHub Actions 环境');
+        console.log('❌ 未检测到 COOKIE 环境变量');
+        console.log('💡 请前往 Settings -> Secrets and variables -> Actions -> Variables 添加 COOKIE1, COOKIE2...');
+        process.exit(1); // 报错退出
     } else {
         // 本地模式：从 cookie.json 读取
         console.log('💻 使用本地文件模式\n');
