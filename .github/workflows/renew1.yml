@@ -26,10 +26,10 @@ jobs:
           npm install
           npx playwright install-deps chrome
       
-      - name: Run Unified Renewal Script
+      - name: Run Action Script
         env:
           USERS_JSON: ${{ secrets.USERS_JSON }}
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x720x24" node action_renew.js
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x720x24" node action.js
       
       - name: Upload Screenshots (Debug)
         if: always()
